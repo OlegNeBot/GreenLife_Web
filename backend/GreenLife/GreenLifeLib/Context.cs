@@ -50,7 +50,8 @@ namespace GreenLifeLib
                 //string conString = config.GetConnectionString("DefaultConnection");
 
                 //optionsBuilder.UseNpgsql(conString);
-                optionsBuilder.UseNpgsql("Host=45.10.244.15;Port=55532;Database=work100005;Username=work100005;Password=– ce*aT6PR27jN~_$bCM}s");
+                //optionsBuilder.UseNpgsql("Host=45.10.244.15;Port=55532;Database=work100005;Username=work100005;Password=– ce*aT6PR27jN~_$bCM}s");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=greenlife_db;Username=postgres;Password=oleggol12");
             }
         }
 

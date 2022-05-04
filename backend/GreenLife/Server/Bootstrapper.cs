@@ -9,7 +9,7 @@ namespace Server
 {
     #region [Classes]
 
-    internal class Bootstrapper : DefaultNancyBootstrapper
+    public class Bootstrapper : DefaultNancyBootstrapper
     {
         #region [Methods]
 
@@ -23,7 +23,7 @@ namespace Server
         #endregion
     }
 
-    internal static class NancyExtension
+    public static class NancyExtension
     {
         #region [Methods]
 

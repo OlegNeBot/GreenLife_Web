@@ -10,13 +10,14 @@ namespace GreenLifeLib
         #region [Props]
 
         public int Id { get; set; }
-        public string Login { get; private set; }
+        public string Login { get; set; }
 
         private string _password = null;
         public string Password
         {
             get { return _password; }
-            private set { _password = ToHash(value); }
+            //set { _password = ToHash(value); }
+            set { _password = value; }
         }
         public string Name { get; private set; }
         public string FamilyName { get; private set; }
@@ -26,7 +27,7 @@ namespace GreenLifeLib
             Женский,
             Другой
         }
-        public Sex UserSex { get; private set; }
+        public Sex UserSex { get; set; }
         public DateTime DateOfBirth { get; private set; }
         public DateTime RegDate { get; private set; }
         public int ScoreSum { get; set; }

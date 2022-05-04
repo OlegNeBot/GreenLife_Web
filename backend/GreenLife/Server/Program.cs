@@ -8,11 +8,11 @@ namespace Server
         {
             var uri = new Uri("http://localhost:8888");
 
-            HostConfiguration hostConfiguration = new HostConfiguration();
-            hostConfiguration.UrlReservations.CreateAutomatically = true;
+            HostConfiguration hostConfig = new HostConfiguration();
+            hostConfig.UrlReservations.CreateAutomatically = true;
 
 
-            using (var host = new NancyHost(uri, new Bootstrapper(), hostConfiguration))
+            using (var host = new NancyHost(uri, new Bootstrapper(), hostConfig))
             {
                 host.Start();
 
