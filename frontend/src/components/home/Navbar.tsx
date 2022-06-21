@@ -10,6 +10,11 @@ import { Paths } from '../../routes';
 export default () => {
   const [notifications, setNotifications] = useState();
   
+  const exit = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+
   return(
     <>
     <style>
@@ -59,7 +64,7 @@ export default () => {
 
                 <Dropdown.Divider />
 
-                <DropdownItem as={Link} to={Paths.Landing.path} className='fw-bold'>
+                <DropdownItem as={Link} to={Paths.Landing.path} className='fw-bold' onClick={exit}>
                 <span className='text-danger align-items-center d-flex '><BsBoxArrowRight className='icon me-1'/>Выйти</span>
                 </DropdownItem>
               </DropdownMenu>

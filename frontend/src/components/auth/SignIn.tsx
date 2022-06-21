@@ -1,9 +1,9 @@
 import axios from 'axios';
 import sha256 from 'sha256';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Button from 'react-bootstrap/Button';
-import { Card, Col, Container, Form, FormCheck, InputGroup, Row } from 'react-bootstrap';
+import { Card, Col, Container, Form, FormCheck, InputGroup, Modal, Row } from 'react-bootstrap';
 
 import {IoIosArrowBack} from 'react-icons/io';
 import {RiLockPasswordFill} from 'react-icons/ri';
@@ -21,14 +21,20 @@ interface State {
 }
 
 const SignIn: React.FC = () => {
+
   const [check, setCheck] = React.useState(false);
 
   const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   const [values, setValues] = useState<State>({
 		email: '',
 		password: ''
 	});
+
+  let errorMsg = '';
 
   const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValues({...values, [prop]: event.target.value.trim()});
@@ -43,19 +49,26 @@ const SignIn: React.FC = () => {
       email: values.email,
       password: sha256(values.password)
     }
-    const url = 'http://localhost:8888/auth';
+    const url = 'http://localhost:8080/signin';
       axios.post(url, data)
       .then((response) => {
         if (response.status === 200) { 
-          alert('Успешно!'); 
+          if (check) {
+          localStorage.setItem('token', response.headers['token']);
+          } 
+          else {
+            sessionStorage.setItem('token', response.headers['token']);
+          }
+          navigate(Paths.HomePage.path);
         } else if (response.status === 404) {
-          alert('LALALA');
-        }
+          errorMsg = 'Ошибка: аккаунт не найден. Проверьте введенные данные и повторите попытку.';
+          setShow(true);
+         }
       })
       .catch((error) => {
-        alert('Что-то пошло не так!');
+        errorMsg = 'Произошла ошибка! Проверьте введенные данные и повторите попытку.';
+        setShow(true);
       });
-      navigate('/home');
   }
 
   return(
@@ -100,11 +113,11 @@ const SignIn: React.FC = () => {
                           <FormCheck.Input id="defaultCheck5" className="me-2" onChange={checkChangeHandler}/>
                           <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">Запомнить меня</FormCheck.Label>
                         </Form.Check>
-                        <Card.Link as={Link} to='' className="small text-end">Забыли пароль ?</Card.Link>
+                        {/* <Card.Link as={Link} to='' className="small text-end">Забыли пароль ?</Card.Link> */}
                       </div>
                     </Form.Group>
 
-                  <Button variant="primary" type="submit" className="w-100" onClick={sendData}>
+                  <Button variant="primary" className="w-100" onClick={sendData}>
                     Войти
                   </Button>
                   </Form>
@@ -122,6 +135,22 @@ const SignIn: React.FC = () => {
             </Col>
           </Row>
         </Container>
+
+        <Modal show={show} onHide={handleClose}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id='contained-modal-title-vcenter'>Ошибка!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{errorMsg}</Modal.Body>
+          <Modal.Footer>
+            <Button className='w-full' variant="primary" onClick={handleClose}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </section>
     </main>
   );

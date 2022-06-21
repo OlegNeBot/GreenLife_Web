@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GreenLifeLib
 {
@@ -9,14 +7,14 @@ namespace GreenLifeLib
         #region [Props]
 
         public int Id { get; set; }
-        public string AnswerText { get; set; }
+        public string AnswerText { get; set; } = null!;
 
         #endregion
 
         #region [Rels]
 
-        public Question Question { get; set; }
-        public List<UserAnswer> UserAnswer { get; set; }
+        public int QuestionId { get; set; }
+        public Question Question { get; set; } = null!;
 
         #endregion
 
@@ -26,12 +24,11 @@ namespace GreenLifeLib
         {
             using (Context db = new())
             {
-                var answers = db.Answer.Include(p => p.Question).Where(p => p.Question.Id == id).ToList();
-                return answers;
+                var question = db.Question.Where(p => p.Id == id).First();
+                return question.Answers;
             }
         }
 
         #endregion
     }
 }
-

@@ -15,6 +15,10 @@ namespace GreenLifeLib
 
         #region [Methods]
 
+        /// <summary>
+        /// Gets a random day phrase
+        /// </summary>
+        /// <returns>Random day phrase</returns>
         public static string GetRandomPhrase()
         {
             using (Context db = new())
@@ -30,4 +34,3 @@ namespace GreenLifeLib
         #endregion
     }
 }
-

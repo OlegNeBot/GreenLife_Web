@@ -53,7 +53,7 @@ const ItemsList : React.FC<ListProps> = props => {
   else if(props.type === 'memo') {
     return(
     <>
-      <Memo className='mt-3 px-0' name='Имя 1' picRef='Ыыыыы'/>
+      <Memo className='mt-3 px-0' name='Эко-правонарушения' picRef='https://disk.yandex.ru/i/bFwhoWW5L0fdjw'/>
     </>
     );} 
   return <></>

@@ -1,0 +1,47 @@
+﻿<Window x:Class="GLFinder.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GLFinder"
+        mc:Ignorable="d"
+        MinHeight="500" MaxHeight="500" MinWidth="400" MaxWidth="400"
+        Title="Вход" Height="500" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid Background="#F5F5F5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="57*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="8"  FontSize="30" FontFamily="Segoe UI"
+                Padding="0 30 5 0" FontWeight="Black" HorizontalContentAlignment="Center">Авторизация</Label>
+        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="6" Padding="10 5 0 0" FontSize="20" FontFamily="Arial Bold">Email</TextBlock>
+        <TextBox x:Name="EmailTBox" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="6" Padding="5 0 0 0 " FontSize="16" BorderThickness="2" Margin="0,2,5,5"></TextBox>
+        <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="6" Padding="10 5 0 0" FontSize="20" FontFamily="Arial Bold">Пароль</TextBlock>
+        <PasswordBox x:Name="PassTBox" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="6" Padding="5 0 0 0 "  FontSize="16" BorderThickness="2" Margin="0,2,5,5" ></PasswordBox>
+        <TextBlock x:Name="MessageTBox" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="6" Padding="10 5 0 0" FontSize="13" FontFamily="Arial Bold"></TextBlock>
+        <Button Content="Войти" Grid.Column="1" Grid.ColumnSpan="7" x:Name="LoginButton" Grid.Row="10" Grid.RowSpan="2" Padding="5 0 0 0 " Click="LoginButton_Click" FontFamily="Arial Bold" FontSize="23" BorderThickness="2" BorderBrush="Black" Background="LightGreen" Margin="0,11,54,11"/>
+
+    </Grid>
+</Window>

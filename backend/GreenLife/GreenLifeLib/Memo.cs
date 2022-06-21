@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GreenLifeLib
 {
@@ -15,6 +18,10 @@ namespace GreenLifeLib
 
         #region [Methods]
 
+        /// <summary>
+        /// Method that gets all the memos from database
+        /// </summary>
+        /// <returns>A list of memos</returns>
         public static List<Memo> GetMemos()
         {
             using (Context db = new())
@@ -27,4 +34,3 @@ namespace GreenLifeLib
         #endregion
     }
 }
-

@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GreenLifeLib
 {
@@ -20,11 +24,16 @@ namespace GreenLifeLib
 
         #region [Methods]
 
+        /// <summary>
+        /// Gets the habit phrase by habit id.
+        /// </summary>
+        /// <param name="id">Habit id.</param>
+        /// <returns>Habit phrase.</returns>
         public static HabitPhrase GetHabitPhrase(int id)
         {
             using (Context db = new())
             {
-                var phrase = db.HabitPhrase.Where(p => p.Habit.Id == id).First();
+                var phrase = db.HabitPhrase.Where(p => p.Habit.Id == id).FirstOrDefault();
                 return phrase;
             }
         }
@@ -32,4 +41,3 @@ namespace GreenLifeLib
         #endregion
     }
 }
-

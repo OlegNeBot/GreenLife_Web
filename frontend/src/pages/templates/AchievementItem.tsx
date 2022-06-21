@@ -12,6 +12,7 @@ const AchievementItem : React.FC<AchievementProps> = props => {
     <>
       <ItemTemplate type='achievement' username={props.username} date={props.date} achievement={props.achievement}/>
     </>
+    
   );
 }
 

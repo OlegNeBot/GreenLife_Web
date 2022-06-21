@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace GreenLifeLib
@@ -10,35 +8,26 @@ namespace GreenLifeLib
         #region [Props]
 
         public int Id { get; set; }
-        public string Login { get; set; }
-
-        private string _password = null;
-        public string Password
-        {
-            get { return _password; }
-            //set { _password = ToHash(value); }
-            set { _password = value; }
-        }
-        public string Name { get; private set; }
-        public string FamilyName { get; private set; }
-        public enum Sex
-        {
-            Мужской,
-            Женский,
-            Другой
-        }
-        public Sex UserSex { get; set; }
-        public DateTime DateOfBirth { get; private set; }
-        public DateTime RegDate { get; private set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public DateTime RegDate { get; set; }
+        public string Email { get; set; }
         public int ScoreSum { get; set; }
 
         #endregion
 
         #region [Rels]
 
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public List<UserAnswer> UserAnswer { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
+
+        public List<CheckList> CheckList { get; set; } = new();
+
+        public List<HabitPerformance> HabitPerformance { get; set; } = new();
+
+        public List<AccountAction> AccountAction { get; set; } = new();
+
+        public Token Token { get; set; }
 
         #endregion
 
@@ -49,32 +38,78 @@ namespace GreenLifeLib
 
         }
 
-        public Account(string login, string password, string name, string fname, string sex, DateTime? dOB, DateTime reg, int userId)
+        public Account(string email, string password, string name, DateTime regDate)
         {
-            Login = login;
             Password = password;
             Name = name;
-            FamilyName = fname;
-            UserSex = ToSex(sex);
-            DateOfBirth = (DateTime)dOB;
-            RegDate = reg;
-            ScoreSum = 0;
-            UserId = userId;
+            RegDate = regDate;
+            Email = email;
+            RoleId = 1;
         }
 
         #endregion
 
         #region [Methods]
-
-        public static void AddAccount(Account acc)
+        /// <summary>
+        /// Creates an account when user registers.
+        /// </summary>
+        /// <param name="email">Account email.</param>
+        /// <param name="password">Account password.</param>
+        /// <param name="name">Account name.</param>
+        /// <param name="regDate">Account register date.</param>
+        public static async void CreateAccount(string email, string password, string name, DateTime regDate)
         {
-            using (Context db = new())
+            //Creating a new account
+            Account account = new(email, password, name, regDate);
+            await using (Context db = new())
             {
-                db.Account.Add(acc);
-                db.SaveChanges();
+                AddAccount(account);
+                //Then setting an action -> achievement for creating an account
+                GreenLifeLib.AccountAction.NewAction(account, 4);
+
+                Account acc = db.Account.Where(p => p.Email.Equals(email)).First();
+                //Then creating checklists, habit performances etc.
+                GreenLifeLib.CheckList.CreateAccountCheckLists(account);
+
             }
         }
 
+        /// <summary>
+        /// Adds an Account to database.
+        /// </summary>
+        /// <param name="acc">Account that should be added.</param>
+        public static async void AddAccount(Account acc)
+        {
+            using (Context db = new())
+            {
+                await db.Account.AddAsync(acc);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Checks the email availableness. If available - returns "true", if not - "false".
+        /// </summary>
+        /// <param name="email">Email that should be checked.</param>
+        /// <returns>Returns "true" if email is available and "false" if not.</returns>
+        public static bool IsEmailAvailable(string email)
+        {
+            using (Context db = new())
+            {
+                var account = db.Account.Where(p => p.Email.Equals(email)).FirstOrDefault();
+                if (account != null)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Transforms the password into hash string.
+        /// </summary>
+        /// <param name="pass">Password needed to be in hash.</param>
+        /// <returns>Hashed password.</returns>
         public static string ToHash(string pass)
         {
             using (SHA256 sha = SHA256.Create())
@@ -85,29 +120,6 @@ namespace GreenLifeLib
                     _builder.Append(_computed[i].ToString("x2"));
                 return _builder.ToString();
             }
-        }
-
-        public static bool IsLoginAvailable(string login)
-        {
-            using (Context db = new())
-            {
-                var _accounts = db.Account;
-                foreach (Account _acc in _accounts)
-                {
-                    if (_acc.Login.ToLower().Equals(login.ToLower()))
-                        return false;
-                }
-                return true;
-            }
-        }
-
-        private static Sex ToSex(string sex)
-        {
-            if (sex.Equals(Sex.Мужской.ToString()))
-                return Sex.Мужской;
-            else if (sex.Equals(Sex.Женский.ToString()))
-                return Sex.Женский;
-            else return Sex.Другой;
         }
 
         #endregion

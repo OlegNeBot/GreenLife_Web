@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, Card, Container, Modal } from 'react-bootstrap';
+import { Button, Card, Container, Modal, Image } from 'react-bootstrap';
 
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -26,7 +26,7 @@ const Template : React.FC<ComponentProps> = props => {
     return(
       <>
         <Card style={{width: '18rem', cursor: 'pointer'}} className={`border border-dark ${props.className}`} onClick={handleShow}>
-          <Card.Img src={props.picRef}/>
+          <Card.Img src='https://downloader.disk.yandex.ru/preview/7949e5c1141fc046fbe614572356e3133d68bf55761517377593b31163d6e724/62b1c0bd/Y4KHBo_zV6VoQXCr3W5eDW3VJUU8UulssUUyudGM8RX9qMuptS5K3ZSweMxSxhYXhyPdttybGYam7iZiXmvjzw%3D%3D?uid=0&filename=1.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048' />
           <Card.Body>
             <Card.Title>{props.name}</Card.Title>
           </Card.Body>
@@ -37,6 +37,9 @@ const Template : React.FC<ComponentProps> = props => {
           <Modal.Header closeButton>
             <Modal.Title>{props.name}</Modal.Title>
           </Modal.Header>
+          <Modal.Body>
+            <Image src='https://downloader.disk.yandex.ru/preview/7949e5c1141fc046fbe614572356e3133d68bf55761517377593b31163d6e724/62b1c0bd/Y4KHBo_zV6VoQXCr3W5eDW3VJUU8UulssUUyudGM8RX9qMuptS5K3ZSweMxSxhYXhyPdttybGYam7iZiXmvjzw%3D%3D?uid=0&filename=1.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048'/>
+          </Modal.Body>
         </Modal>
       </>
     ); }
@@ -83,7 +86,6 @@ const Template : React.FC<ComponentProps> = props => {
             {/* <Button variant='primary' style={{backgroundColor: '#4d7d0f', borderColor: '#4d7d0f'}}>Отметить</Button> */}
             {props.type === 'habit'
             ? <Button className='w-full' variant='primary' onClick={handleMarkShow}>Отметить</Button> 
-            // TODO: Add a link using an id
             : <Button className='w-full' variant='primary' onClick={goToChecklist}>Обновить</Button>
             }
           </Modal.Footer>

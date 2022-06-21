@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import sha256 from 'sha256';
 
-import { Container, Card, Row, Col, Form, InputGroup, FormCheck, Button } from 'react-bootstrap';
+import { Container, Card, Row, Col, Form, InputGroup, FormCheck, Button, Modal } from 'react-bootstrap';
 
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdDriveFileRenameOutline, MdEmail } from 'react-icons/md';
@@ -31,6 +31,10 @@ const SignUp: React.FC = () => {
       setValues({...values, [prop]: event.target.value.trim()});
     };
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    let errorMsg = '';
+
     const navigate = useNavigate();
 
     const [valid, setValid] = useState(false);
@@ -46,28 +50,27 @@ const SignUp: React.FC = () => {
     };
     
     const sendData = () => {
-      if (valid) {
       const data : RegistrationModel = {
         name: values.name,
         email: values.email,
         password: sha256(values.password),
-        registerDate: new Date()
       }
-      const url = 'http://localhost:8888/reg';
+      const url = 'http://localhost:8080/signup';
       axios.post(url, data)
       .then((response) => {
         if (response.status === 200) { 
-          alert('Успешно!'); 
+          sessionStorage.setItem('token', response.headers['token']);
+          navigate(Paths.HomePage.path); 
         } 
-        else if (response.status === 404) {
-          alert('LALALA');
+        else if (response.status === 409) {
+          errorMsg = response.headers['Error'];
+          setShow(true);
         }
       })
       .catch((error) => {
-        alert('Что-то пошло не так!');
+        errorMsg = 'Произошла ошибка! Проверьте введенные данные и повторите попытку.';
+        setShow(true);
       });
-      navigate('home');
-    }
     }
 
     return (
@@ -132,7 +135,7 @@ const SignUp: React.FC = () => {
                     </FormCheck.Label>
                   </FormCheck>
 
-                  <Button variant="primary" type="submit" className="w-100">
+                  <Button variant="primary" onClick={sendData} className="w-100">
                     Зарегистрироваться
                   </Button>
                 </Form>
@@ -149,6 +152,22 @@ const SignUp: React.FC = () => {
             </Col>
           </Row>
         </Container>
+        
+        <Modal show={show} onHide={handleClose}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+        <Modal.Header closeButton>
+            <Modal.Title id='contained-modal-title-vcenter'>Ошибка!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{errorMsg}</Modal.Body>
+          <Modal.Footer>
+            <Button className='w-full' variant="primary" onClick={handleClose}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </section>
     </main>
     );

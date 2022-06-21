@@ -1,8 +1,35 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Paths } from '../../routes';
 
 const FirstScreen : React.FC = () => {
+    const navigate = useNavigate();
+
+    const checkToken = (path: string) =>
+    {
+      let tokens = localStorage.getItem('token');
+      if(tokens !== null) {
+        navigate(Paths.HomePage.path);
+        return true;
+      } else {
+        tokens = sessionStorage.getItem('token');
+        if(tokens !== null) {
+          navigate(Paths.HomePage.path);
+        }
+        else {
+          navigate(path);
+        }
+      }
+    }
+  
+    const signIn = () => {
+      checkToken(Paths.SignIn.path);
+    }
+  
+    const signUp = () => {
+      checkToken(Paths.SignUp.path);
+    }
+
     return (
         <section id='main' className='flex flex-col items-center '>
             <div className='container mx-auto flex justify-between'>
@@ -12,11 +39,11 @@ const FirstScreen : React.FC = () => {
                     <div className='text-3xl text mt-20'><p>Приложение для формирования</p></div>
                     <div className='text-3xl text mt-1'><p>Ваших эко-привычек</p></div>
                     <div className='flex space-x-4 p-10'>
-                        <button className=' w-40 h-16 bg-white hover:bg-slate-100 text-lime-700 border-2 rounded-lg'>
-                            <Link to={Paths.SignIn.path}><p className='text-2lg font-medium'>Войти</p></Link>
+                        <button className=' w-40 h-16 bg-white hover:bg-slate-100 text-lime-700 border-2 rounded-lg' onClick={signIn}>
+                            <p className='text-2lg font-medium'>Войти</p>
                         </button>
-                        <button className='max-h-sm w-40 h-16 bg-white hover:bg-slate-100 text-lime-700 border-2 rounded-lg'>
-                            <Link to={Paths.SignUp.path}><p className='text-2lg font-medium'>Зарегистрироваться</p></Link>
+                        <button className='max-h-sm w-40 h-16 bg-white hover:bg-slate-100 text-lime-700 border-2 rounded-lg' onClick={signIn}>
+                            <p className='text-2lg font-medium'>Зарегистрироваться</p>
                         </button>
                     </div>
                   </div>

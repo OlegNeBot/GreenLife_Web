@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GreenLifeLib
 {
@@ -7,13 +11,13 @@ namespace GreenLifeLib
         #region [Props]
 
         public int Id { get; set; }
-        public string UserRole { get; set; }
+        public string RoleName { get; set; }
 
         #endregion
 
         #region [Rels]
 
-        public List<User> User { get; set; }
+        public List<Account> Account { get; set; } = new();
 
         #endregion
     }

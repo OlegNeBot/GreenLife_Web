@@ -1,0 +1,28 @@
+﻿<Window x:Class="GLFinder.AccountWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GLFinder"
+        mc:Ignorable="d"
+        Title="Аккаунт" MinHeight="450" MinWidth="800"
+        MaxHeight="450" MaxWidth="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid Background="LightGreen">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="IdBlock" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" FontFamily="ArialBlack">Аккаунт № </TextBlock>
+        <TextBlock x:Name="NameBlock" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80 0 0 0" FontSize="20" FontWeight="Bold" FontFamily="ArialBlack">Имя: </TextBlock>
+        <TextBlock x:Name="EmailBlock" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80 0 0 30" FontSize="20" FontWeight="Bold" FontFamily="ArialBlack">Email: </TextBlock>
+        <TextBlock x:Name="RegBlock" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50 0 0 0" FontSize="20" FontWeight="Bold" FontFamily="ArialBlack">Дата регистрации: </TextBlock>
+        <TextBlock x:Name="ScoreBlock" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50 0 0 30" FontSize="20" FontWeight="Bold" FontFamily="ArialBlack">Количество баллов: </TextBlock>
+    </Grid>
+</Window>

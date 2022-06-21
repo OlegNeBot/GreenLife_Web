@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace GreenLifeLib
 {
@@ -11,8 +10,7 @@ namespace GreenLifeLib
         public int Id { get; set; }
         public int Score { get; set; }
         public string HabitName { get; set; }
-        public int NumsNeeded { get; set; }
-        public string ExecProperty { get; set; }
+        public int Total { get; set; }
 
         #endregion
 
@@ -23,23 +21,27 @@ namespace GreenLifeLib
         public int TypeId { get; set; }
         public Type Type { get; set; }
 
-        public int CheckListId { get; set; }
-        public List<CheckList> CheckList { get; set; }
+        public List<CheckList> CheckList { get; set; } = new();
 
-        public List<HabitPerformance> HabitPerformance { get; set; }
+        public List<HabitPerformance> HabitPerformance { get; set; } = new();
 
         #endregion
 
         #region [Methods]
+        /// <summary>
+        /// Gets all Habits of CheckList by CheckList id.
+        /// </summary>
+        /// <param name="id">CheckList id.</param>
+        /// <returns>List of CheckList Habits.</returns>
         public static List<Habit> GetHabitsOfCheckList(int id)
         {
             using (Context db = new())
             {
-                var chList = db.CheckList.Include(p => p.Habit).Where(p => p.Id == id).First();
+                var checkList = db.CheckList.Include(p => p.Habit).Where(p => p.Id == id).First();
                 List<Habit> habits = new();
-                foreach (Habit h in chList.Habit)
+                foreach (Habit habit in checkList.Habit)
                 {
-                    habits.Add(h);
+                    habits.Add(habit);
                 }
                 return habits;
             }
@@ -48,4 +50,3 @@ namespace GreenLifeLib
         #endregion
     }
 }
-
