@@ -34,7 +34,7 @@ namespace GreenLifeLib.Migrations
 
                     b.HasIndex("HabitId");
 
-                    b.ToTable("CheckListHabit");
+                    b.ToTable("CheckListHabit", (string)null);
                 });
 
             modelBuilder.Entity("GreenLifeLib.Account", b =>
@@ -61,8 +61,9 @@ namespace GreenLifeLib.Migrations
                         .HasColumnType("varchar(64)")
                         .HasColumnName("password");
 
-                    b.Property<DateTime>("RegDate")
-                        .HasColumnType("timestamptz")
+                    b.Property<string>("RegDate")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("reg_date");
 
                     b.Property<int>("RoleId")
@@ -92,8 +93,9 @@ namespace GreenLifeLib.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ActionDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<string>("ActionDate")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("action_date");
 
                     b.Property<int>("ActionId")

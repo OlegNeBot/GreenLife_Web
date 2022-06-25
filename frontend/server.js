@@ -11,7 +11,6 @@ http.createServer(function(request, response){
     fs.readFile(filePath, function(error, data){
         console.log(filePath);
         if(error){
-                   
             response.statusCode = 404;
             response.end("Resourse not found!");
         }   

@@ -1,10 +1,29 @@
-import React, {useState} from 'react';
-import ListTemplate from './listsTemplates/ListTemplate';
+import React, {useEffect, useState} from 'react';
+import { Container, Row } from 'react-bootstrap';
 
-const HabitCatalog : React.FC = () => {
+import SearchFilters from './templates/SearchFilters';
+import Habit from './templates/Habit';
+
+import habit from '../store/HabitStore';
+import { HabitModel } from '../models/HabitModel';
+import { observer } from 'mobx-react-lite';
+
+const HabitCatalog : React.FC =  () => {
+  useEffect(() => {
+    habit.load();
+  }, [habit, habit.load])
+  
     return(
         <>
-          <ListTemplate type='habit' />
+          <Container >
+            <SearchFilters type='habit' />
+
+            <Row className='px-0 justify-content-between'>
+              {habit.sortedHabits.map((h: HabitModel) => 
+                <Habit Id={h.Id} HabitName={h.HabitName} Total={h.Total} HabitPerformance={h.HabitPerformance} key={h.Id}/>
+                )}
+            </Row>
+          </Container>
         </>
     );
 }

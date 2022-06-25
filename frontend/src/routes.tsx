@@ -11,5 +11,7 @@ export const Paths : any = {
     HabitCatalog: { path: 'habits' },
     HistoryAndAchievements: { path: 'history' },
     Memos: { path: 'memos' },
-    Settings: { path: 'settings' }
+    Settings: { path: 'settings' },
+    Report: {path: '/report'},
+    Certificate: {path: '/certificate'}
 }

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Card, ProgressBar } from 'react-bootstrap';
 
@@ -7,7 +8,7 @@ interface IProgressProps {
   total: number
 }
 
-const ProgressTemplate : React.FC<IProgressProps> = props => {
+const ProgressTemplate : React.FC<IProgressProps> = observer(props => {
   const now = Math.round(props.num / props.total * 100);
   let text = '';
   if (now >= 0 && now < 25){
@@ -33,11 +34,11 @@ const ProgressTemplate : React.FC<IProgressProps> = props => {
         : <Card.Header className='fw-bold'>Заполненность чек-листов</Card.Header>
       }
       <Card.Body>
-        <ProgressBar now={now} label={`${props.num}/${props.total}`}/>
+        <ProgressBar animated now={now} label={`${props.num}/${props.total}`}/>
         <Card.Text>{text}</Card.Text>
       </Card.Body>
     </Card>
   );
-}
+});
 
 export default ProgressTemplate;

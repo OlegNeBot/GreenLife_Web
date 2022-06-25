@@ -3,6 +3,8 @@ import { Col, Form, InputGroup, Row } from 'react-bootstrap';
 
 import {HiOutlineSearch} from 'react-icons/hi'
 
+import habit from '../../store/HabitStore';
+
 export interface SearchProps {
   type: string,
 };
@@ -13,6 +15,7 @@ const SearchFilters : React.FC<SearchProps> = props => {
 
   const sortHandler  = (e: React.ChangeEvent<HTMLSelectElement> ) => {
     setSort(e.target.value);
+    habit.sorting(e.target.value);
   }
   
   return(
@@ -33,13 +36,8 @@ const SearchFilters : React.FC<SearchProps> = props => {
           <Form.Group controlId='count' >
             <Form.Select value={sort} onChange={sortHandler}>
               <option value='0' disabled>Сортировка:</option>
-              {props.type !== 'memo' 
-              ? <>
-                  <option value='1'>По наибольшему кол-ву отметок</option>
-                  <option value='2'>По наименьшему кол-ву отметок</option>
-                </>
-              : <></>
-              }
+              <option value='1'>По наибольшему кол-ву отметок</option>
+              <option value='2'>По наименьшему кол-ву отметок</option>
               <option value='3'>По алфавиту: от А до Я</option>
               <option value='4'>По алфавиту: от Я до А</option>   
               

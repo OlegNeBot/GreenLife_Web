@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace GreenLifeLib
 {
@@ -11,17 +7,21 @@ namespace GreenLifeLib
         #region [Props]
 
         public int Id { get; set; }
-        public DateTime ActionDate { get; set; }
+        public string ActionDate { get; set; }
 
         #endregion
 
         #region [Rels]
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public int AccountId { get; set; }
-        public Account? Account { get; set; }
 
+        public Account Account { get; set; } = new();
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public int ActionId { get; set; }
-        public Action? Action { get; set; }
+
+        public Action Action { get; set; } = new();
 
         #endregion
 
@@ -32,12 +32,13 @@ namespace GreenLifeLib
         /// </summary>
         /// <param name="account">Account that performs an action.</param>
         /// <param name="actionId">Action id.</param>
-        public static async void NewAction(Account account, int actionId)
+        public static async void NewAction(int accountId, int actionId)
         {
             using (Context db = new())
             {
-                Action action = db.Action.Where(p => p.Id == actionId).First();
-                AccountAction accountAction =  new() { ActionId = action.Id, AccountId = account.Id, ActionDate = DateTime.UtcNow };
+                Account account = await db.Account.Where(p => p.Id == accountId).FirstAsync();
+                Action action = await db.Action.Where(p => p.Id == actionId).FirstAsync();
+                AccountAction accountAction =  new() { ActionId = action.Id, Action = action, Account = account, AccountId = account.Id, ActionDate = DateTime.UtcNow.ToShortDateString() };
                 await db.AccountAction.AddAsync(accountAction);
                 await db.SaveChangesAsync();
             }

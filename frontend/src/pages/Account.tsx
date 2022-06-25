@@ -1,25 +1,35 @@
 import React, {useState} from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 
-const Account : React.FC = () => {
+import { observer } from 'mobx-react-lite';
+import account from '../store/AccountStore';
+import { useNavigate } from 'react-router';
+import { Paths } from '../routes';
+
+const Account : React.FC = observer(() => {
+  const navigate = useNavigate();
   return(
     <Container>
       <Row>
         <Col>
-          <h4>Имя: Олег</h4>
-          <h4>Email: myemail@yandex.ru</h4>
-          <h4>Дата регистрации: 15.06.2022</h4>
+          <h4>Имя: {account.Account.Name}</h4>
+          <h4>Email: {account.Account.Email}</h4>
+          <h4>Дата регистрации: {account.Account.RegDate}</h4>
 
         </Col>
       </Row>
       <Row>
         <Col>
           <h4>Текущий прогресс</h4>
-          <Button>Сформировать отчет</Button>
+          <Button onClick={() => {
+            navigate(Paths.Report.path);
+          }}
+          >
+            Сформировать отчет</Button>
         </Col>
       </Row>
     </Container>
   );
-}
+});
 
 export default Account;

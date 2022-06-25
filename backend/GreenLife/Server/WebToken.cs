@@ -1,15 +1,7 @@
 ﻿using GreenLifeLib;
-using JWT;
 using JWT.Algorithms;
 using JWT.Builder;
 using JWT.Exceptions;
-using JWT.Serializers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -61,37 +53,6 @@ namespace Server
 
         #region [Methods]
 
-        public void GetJWT() 
-        {
-            var token = JwtBuilder.Create()
-                                  .WithAlgorithm(new HMACSHA256Algorithm())
-                                  .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
-                                  .AddClaim("id", 7)
-                                  .WithSecret(secret)
-                                  .Encode();
-            Console.WriteLine(token);
-
-            /*var json = JwtBuilder.Create()
-                                  .WithAlgorithm(new HMACSHA256Algorithm())
-                     .WithSecret(secret)
-                     .MustVerifySignature()
-                     .Decode(token);
-            Console.WriteLine(json);*/
-
-            var payload = JwtBuilder.Create()
-                                  .WithAlgorithm(new HMACSHA256Algorithm())
-                        .WithSecret(secret)
-                        .MustVerifySignature()
-                        .Decode<IDictionary<string, object>>(token);
-            object id;
-            payload.TryGetValue("id", out id!);
-            foreach (var value in payload.Values)
-            {
-                Console.WriteLine(value + " " + value.GetType());
-            }
-            Console.WriteLine(int.Parse(id.ToString()));
-        }
-
         /// <summary>
         /// Creates two tokens: access and refresh with account id then pushes refresh token into Database.
         /// </summary>
@@ -109,6 +70,7 @@ namespace Server
             var refreshToken = JwtBuilder.Create()
                                   .WithAlgorithm(new HMACSHA256Algorithm())
                                   .AddClaim("exp", DateTimeOffset.UtcNow.AddDays(3).ToUnixTimeSeconds())
+                                  .AddClaim("id", id)
                                   .WithSecret(secret)
                                   .Encode();
             //Searching for token in database; if found -> updates it, else adds a new token.

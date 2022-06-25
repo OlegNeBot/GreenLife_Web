@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GreenLifeLib
+﻿namespace GreenLifeLib
 {
     public class Question
     {
@@ -18,19 +12,6 @@ namespace GreenLifeLib
         #region [Rels]
 
         public List<Answer> Answers { get; set; } = new();
-
-        #endregion
-
-        #region [Methods]
-
-        public static List<Question> GetQuestions()
-        {
-            using (Context db = new())
-            {
-                var questions = db.Question.ToList();
-                return questions;
-            }
-        }
 
         #endregion
     }

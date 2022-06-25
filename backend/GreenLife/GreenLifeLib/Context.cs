@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
 namespace GreenLifeLib
 {
@@ -79,7 +78,6 @@ namespace GreenLifeLib
 
                 entity.Property(e => e.RegDate)
                 .IsRequired()
-                .HasColumnType("timestamptz")
                 .HasColumnName("reg_date");
 
                 entity.Property(e => e.Email)

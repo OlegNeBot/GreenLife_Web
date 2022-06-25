@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GreenLifeLib
+﻿namespace GreenLifeLib
 {
     public class CheckListName
     {
         #region [Props]
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public int Id { get; set; }
-        public string Name { get; set; }
+
+        public string? Name { get; set; } = null!;
 
         #endregion
 
         #region [Rels]
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public List<CheckList> CheckList { get; set; } = new();
 
         #endregion

@@ -29,5 +29,5 @@ exports.startserver = startserver;
 exports.startwebpack = startwebpack;
 
 exports.default = parallel(startwebpack, startserver, 
-  startbackserver, 
+  //startbackserver, 
   starttasks);

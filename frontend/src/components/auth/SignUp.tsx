@@ -31,10 +31,6 @@ const SignUp: React.FC = () => {
       setValues({...values, [prop]: event.target.value.trim()});
     };
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    let errorMsg = '';
-
     const navigate = useNavigate();
 
     const [valid, setValid] = useState(false);
@@ -49,27 +45,25 @@ const SignUp: React.FC = () => {
         sendData();
     };
     
-    const sendData = () => {
+    const sendData = async () => {
       const data : RegistrationModel = {
         name: values.name,
         email: values.email,
         password: sha256(values.password),
       }
       const url = 'http://localhost:8080/signup';
-      axios.post(url, data)
+      await axios.post(url, data)
       .then((response) => {
         if (response.status === 200) { 
           sessionStorage.setItem('token', response.headers['token']);
           navigate(Paths.HomePage.path); 
         } 
-        else if (response.status === 409) {
-          errorMsg = response.headers['Error'];
-          setShow(true);
+        else if (response.status === 400) {
+          navigate(Paths.NotFound.path);
         }
       })
       .catch((error) => {
-        errorMsg = 'Произошла ошибка! Проверьте введенные данные и повторите попытку.';
-        setShow(true);
+        navigate(Paths.NotFound.path);
       });
     }
 
@@ -152,22 +146,6 @@ const SignUp: React.FC = () => {
             </Col>
           </Row>
         </Container>
-        
-        <Modal show={show} onHide={handleClose}
-          size="sm"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-        <Modal.Header closeButton>
-            <Modal.Title id='contained-modal-title-vcenter'>Ошибка!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{errorMsg}</Modal.Body>
-          <Modal.Footer>
-            <Button className='w-full' variant="primary" onClick={handleClose}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </section>
     </main>
     );

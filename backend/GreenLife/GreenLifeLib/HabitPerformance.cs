@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace GreenLifeLib
 {
@@ -17,10 +15,16 @@ namespace GreenLifeLib
 
         #region [Rels]
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public int HabitId { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public Habit Habit { get; set; } = null!;
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public int AccountId { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public Account Account { get; set; } = null!;
 
         #endregion
@@ -46,58 +50,76 @@ namespace GreenLifeLib
         /// </summary>
         /// <param name="habitId">Habit id</param>
         /// <param name="accountId">Account id</param>
-        public static async void NewExecution(int habitId, int accountId)
+        public async void NewExecution()
         {
-            await using (Context db = new())
+            using (Context db = new())
             {
-                // Getting a habit by id and its performance by account id
-                var habit = db.Habit.Where(p => p.Id == habitId).First();
-                var habitPerf = db.HabitPerformance
-                        .Where(p => p.HabitId == habit.Id)
-                        .Where(p => p.AccountId == accountId)
-                        .First();
-
                 // If habit isn't executed - add an execution
-                if (!habitPerf.Executed)
+                if (!Executed)
                 {
-                    habitPerf.NumOfExecs++;
-                    habitPerf.DateOfExec = DateTime.UtcNow;
+                    NumOfExecs++;
+                    DateOfExec = DateTime.UtcNow;
 
-                    Account account = db.Account.Where(p => p.Id == accountId).First();
-                    AccountAction.NewAction(account, 1);
+                    Account account = await db.Account.Where(p => p.Id == AccountId).FirstAsync();
+                    AccountAction.NewAction(account.Id, 1);
 
                     // If habit executed needed number of times - change its status
                     // to "executed" and add to user's score habit's score
-                    if (habitPerf.NumOfExecs == habit.Total)
+                    if (NumOfExecs == Habit.Total)
                     {
-                        habitPerf.Executed = true;
+                        Executed = true;
                         try
                         {
-                            AccountAction.NewAction(account, 5);
-                            account.ScoreSum += habit.Score;
+                            if (account.ScoreSum == 0)
+                            {
+                                AccountAction.NewAction(account.Id, 5);
+                            }
+                            account.ScoreSum += Habit.Score;
                             db.Account.Update(account);
                         }
                         catch (InvalidOperationException)
                         { }
                     }
-                    db.HabitPerformance.Update(habitPerf);
-                    db.SaveChanges();
+                    db.HabitPerformance.Update(this);
+                    await db.SaveChangesAsync();
 
                     //Checking if checklist is completed
-                    //TODO: Check this
-                    List<Habit> habits = db.Habit.Where(p => p.CheckList == habit.CheckList).ToList();
-                    bool all = true;
-                    foreach (Habit h in habits)
+                    List<CheckList> checklists = await db.CheckList.Where(p => p.AccountId == AccountId)
+                                                             .Include(d => d.Habit)
+                                                             .ToListAsync();
+                    bool anyCompleted = false;
+                    foreach (CheckList cl in checklists)
                     {
-                        HabitPerformance habitPerformance = db.HabitPerformance.Where(p => p.HabitId == h.Id).First();
-                        if (!habitPerformance.Executed)
+                        if (cl.ExecutionStatus)
                         {
-                            all = false;
+                            anyCompleted = true;
+                            break;
                         }
                     }
-                    if (all)
+
+                    CheckList checklist = checklists.Where(p => p.TypeId == Habit.TypeId).First();
+                    bool allFormed = true;
+
+                    foreach (Habit h in checklist.Habit)
                     {
-                        AccountAction.NewAction(account, 6);
+                        HabitPerformance habitPerformance = await db.HabitPerformance.Where(p => p.HabitId == h.Id)
+                                                                                     .Where(p => p.AccountId == AccountId)
+                                                                                     .FirstAsync();
+                        if (!habitPerformance.Executed)
+                        {
+                            allFormed = false;
+                            break;
+                        }
+                    }
+                    if (allFormed)
+                    {
+                        if (!anyCompleted)
+                        {
+                            AccountAction.NewAction(account.Id, 6);
+                        }
+                        checklist.ExecutionStatus = true;
+                        db.CheckList.Update(checklist);
+                        await db.SaveChangesAsync();
                     }
                 }
             }

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace GreenLifeLib
+﻿namespace GreenLifeLib
 {
     public class Answer
     {
@@ -15,19 +13,6 @@ namespace GreenLifeLib
 
         public int QuestionId { get; set; }
         public Question Question { get; set; } = null!;
-
-        #endregion
-
-        #region [Methods]
-
-        public static List<Answer> GetAnswersByQuestion(int id)
-        {
-            using (Context db = new())
-            {
-                var question = db.Question.Where(p => p.Id == id).First();
-                return question.Answers;
-            }
-        }
 
         #endregion
     }

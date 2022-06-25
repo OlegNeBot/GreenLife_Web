@@ -1,6 +1,6 @@
 import axios from 'axios';
 import sha256 from 'sha256';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import { Card, Col, Container, Form, FormCheck, InputGroup, Modal, Row } from 'react-bootstrap';
@@ -26,15 +26,10 @@ const SignIn: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-
   const [values, setValues] = useState<State>({
 		email: '',
 		password: ''
 	});
-
-  let errorMsg = '';
 
   const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValues({...values, [prop]: event.target.value.trim()});
@@ -44,13 +39,13 @@ const SignIn: React.FC = () => {
     setCheck(!check);
   }
 
-  const sendData = () => {  
+  const sendData = async () => {  
     const data : LoginModel = {
       email: values.email,
       password: sha256(values.password)
     }
     const url = 'http://localhost:8080/signin';
-      axios.post(url, data)
+     await axios.post(url, data)
       .then((response) => {
         if (response.status === 200) { 
           if (check) {
@@ -61,13 +56,11 @@ const SignIn: React.FC = () => {
           }
           navigate(Paths.HomePage.path);
         } else if (response.status === 404) {
-          errorMsg = 'Ошибка: аккаунт не найден. Проверьте введенные данные и повторите попытку.';
-          setShow(true);
+          navigate(Paths.NotFound.path);
          }
       })
       .catch((error) => {
-        errorMsg = 'Произошла ошибка! Проверьте введенные данные и повторите попытку.';
-        setShow(true);
+        navigate(Paths.NotFound.path);
       });
   }
 
@@ -113,7 +106,6 @@ const SignIn: React.FC = () => {
                           <FormCheck.Input id="defaultCheck5" className="me-2" onChange={checkChangeHandler}/>
                           <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">Запомнить меня</FormCheck.Label>
                         </Form.Check>
-                        {/* <Card.Link as={Link} to='' className="small text-end">Забыли пароль ?</Card.Link> */}
                       </div>
                     </Form.Group>
 
@@ -135,22 +127,6 @@ const SignIn: React.FC = () => {
             </Col>
           </Row>
         </Container>
-
-        <Modal show={show} onHide={handleClose}
-          size="sm"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id='contained-modal-title-vcenter'>Ошибка!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{errorMsg}</Modal.Body>
-          <Modal.Footer>
-            <Button className='w-full' variant="primary" onClick={handleClose}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </section>
     </main>
   );

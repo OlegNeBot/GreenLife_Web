@@ -18,7 +18,7 @@ namespace Server
                 host.Start();
                 //First connection to database
                 using (Context db = new()) { }
-                
+
                 Console.WriteLine("Server started!");
                 Console.WriteLine("Server is running on " + uri);
                 Console.WriteLine("Press any key to close the host.");

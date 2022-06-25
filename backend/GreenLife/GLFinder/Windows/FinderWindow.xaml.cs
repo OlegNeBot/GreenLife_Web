@@ -121,7 +121,7 @@ namespace GLFinder
                     {
                         int index = accounts.IndexOf(acc) + 1;
                         int id = acc.Id;
-                        string accountInfo = "Email: " + acc.Email + "; Имя: " + acc.Name + "; Дата регистрации: " + acc.RegDate.ToShortDateString() + "; Сумма баллов: " + acc.ScoreSum + ";";
+                        string accountInfo = "Email: " + acc.Email + "; Имя: " + acc.Name + "; Дата регистрации: " + acc.RegDate + "; Сумма баллов: " + acc.ScoreSum + ";";
                         ResultGrid.Items.Add(new GridItem() { Num = index, Id=id, Info = accountInfo });
 
                     }

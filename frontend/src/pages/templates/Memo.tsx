@@ -1,16 +1,34 @@
-import React from 'react';
-import Template from './Template';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { Card, Modal, Image } from 'react-bootstrap';
+import { MemoModel } from '../../models/MemoModel';
 
-export interface ComponentProps {
-  name: string,
-  picRef: string,
-  className?: string
-};
+const Memo : React.FC<MemoModel> = observer(props => {
+  const [show, setShow] = useState(false);
 
-const Memo : React.FC<ComponentProps> = props => {
+  const toggleShow = () => {
+    setShow(!show);
+  }
+
   return (
-    <Template type='memo' name={props.name} picRef={props.picRef} className={props.className}/>
+    <>
+        <Card style={{width: '18rem', cursor: 'pointer'}} className={'border border-dark mt-3 px-0'} onClick={toggleShow}>
+          <Card.Img src={props.MemoRef} />
+          <Card.Body>
+            <Card.Title>{props.MemoName}</Card.Title>
+          </Card.Body>
+        </Card>
+
+        <Modal show={show} onHide={toggleShow}>
+          <Modal.Header closeButton>
+            <Modal.Title>{props.MemoName}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Image src={props.MemoRef} />
+          </Modal.Body>
+        </Modal>
+      </>
   );
-}
+})
 
 export default Memo;

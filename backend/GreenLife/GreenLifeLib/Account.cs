@@ -10,7 +10,7 @@ namespace GreenLifeLib
         public int Id { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public DateTime RegDate { get; set; }
+        public string RegDate { get; set; }
         public string Email { get; set; }
         public int ScoreSum { get; set; }
 
@@ -18,15 +18,22 @@ namespace GreenLifeLib
 
         #region [Rels]
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public int RoleId { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public Role Role { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public List<CheckList> CheckList { get; set; } = new();
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public List<HabitPerformance> HabitPerformance { get; set; } = new();
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public List<AccountAction> AccountAction { get; set; } = new();
 
+        [System.Text.Json.Serialization.JsonIgnore]
         public Token Token { get; set; }
 
         #endregion
@@ -38,7 +45,7 @@ namespace GreenLifeLib
 
         }
 
-        public Account(string email, string password, string name, DateTime regDate)
+        public Account(string email, string password, string name, string regDate)
         {
             Password = password;
             Name = name;
@@ -50,6 +57,7 @@ namespace GreenLifeLib
         #endregion
 
         #region [Methods]
+
         /// <summary>
         /// Creates an account when user registers.
         /// </summary>
@@ -57,20 +65,18 @@ namespace GreenLifeLib
         /// <param name="password">Account password.</param>
         /// <param name="name">Account name.</param>
         /// <param name="regDate">Account register date.</param>
-        public static async void CreateAccount(string email, string password, string name, DateTime regDate)
+        public static void CreateAccount(string email, string password, string name, string regDate)
         {
             //Creating a new account
             Account account = new(email, password, name, regDate);
-            await using (Context db = new())
+            AddAccount(account);
+            using (Context db = new())
             {
-                AddAccount(account);
                 //Then setting an action -> achievement for creating an account
-                GreenLifeLib.AccountAction.NewAction(account, 4);
+                GreenLifeLib.AccountAction.NewAction(account.Id, 4);
 
-                Account acc = db.Account.Where(p => p.Email.Equals(email)).First();
                 //Then creating checklists, habit performances etc.
                 GreenLifeLib.CheckList.CreateAccountCheckLists(account);
-
             }
         }
 
@@ -78,12 +84,12 @@ namespace GreenLifeLib
         /// Adds an Account to database.
         /// </summary>
         /// <param name="acc">Account that should be added.</param>
-        public static async void AddAccount(Account acc)
+        public static void AddAccount(Account acc)
         {
             using (Context db = new())
             {
-                await db.Account.AddAsync(acc);
-                await db.SaveChangesAsync();
+                db.Account.Add(acc);
+                db.SaveChanges();
             }
         }
 

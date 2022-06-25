@@ -21,9 +21,9 @@ namespace Server
 
                 //Searching for account with this email and password
                 Account account = null!;
-                await using (Context db = new())
+                using (Context db = new())
                 {
-                    account = db.Account.Where(p => (p.Email.Equals(email) && p.Password.Equals(password))).FirstOrDefault()!;
+                   account = await db.Account.Where(p => (p.Email.Equals(email) && p.Password.Equals(password))).FirstOrDefaultAsync();
                 }
 
                 Response response = new();
@@ -38,7 +38,7 @@ namespace Server
                     response.StatusCode = HttpStatusCode.OK;
 
                     //Add an achievement with "id" = 2 -> app entry.
-                    GreenLifeLib.AccountAction.NewAction(account, 2);
+                    AccountAction.NewAction(account.Id, 2);
 
                     //Tokens creating
                     WebToken webToken = new(account.Id);
@@ -52,8 +52,6 @@ namespace Server
                 }
                 else
                 {
-                    response.Headers["Error"] = "Неправильная почта или пароль!";
-
                     response.StatusCode = HttpStatusCode.NotFound;
 
                     return response;
@@ -68,7 +66,7 @@ namespace Server
                 string email = data.Email;
                 string password = data.Password;
                 string name = data.Name;
-                DateTime regDate = DateTime.UtcNow;
+                string regDate = DateTime.UtcNow.ToShortDateString();
 
                 if (!Account.IsEmailAvailable(email))
                 {
@@ -77,8 +75,7 @@ namespace Server
                     response.Headers["Access-Control-Allow-Origin"] = "*";
                     response.Headers["Access-Control-Allow-Method"] = "POST";
 
-                    response.Headers["Error"] = "Этот email уже зарегистрирован!";
-                    response.StatusCode = HttpStatusCode.Conflict;
+                    response.StatusCode = HttpStatusCode.BadRequest;
 
                     return response;
                 }
@@ -86,12 +83,12 @@ namespace Server
                 //Creating an account with its checklists, habit performances etc.
                 Account.CreateAccount(email, password, name, regDate);
 
-                await using (Context db = new())
+                using (Context db = new())
                 {
-                    Account account = db.Account.Where(p => p.Email.Equals(email)).First();
+                    Account account = await db.Account.Where(p => p.Email.Equals(email)).FirstAsync();
 
                     //Add an achievement with "id" = 2 -> app entry.
-                    AccountAction.NewAction(account, 2);
+                    AccountAction.NewAction(account.Id, 2);
 
                     Response response = new();
                     response.Headers["Access-Control-Allow-Origin"] = "*";

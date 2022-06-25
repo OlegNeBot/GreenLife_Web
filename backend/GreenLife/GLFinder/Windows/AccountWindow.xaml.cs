@@ -28,7 +28,7 @@ namespace GLFinder
             IdBlock.Text += " " + account.Id;
             NameBlock.Text += " " + account.Name;
             EmailBlock.Text += " " + account.Email;
-            RegBlock.Text += " " + account.RegDate.ToShortDateString();
+            RegBlock.Text += " " + account.RegDate;
             ScoreBlock.Text += " " + account.ScoreSum;
         }
     }
