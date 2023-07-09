@@ -355,6 +355,9 @@
         }
       },
       "Nancy.Hosting.Self/2.0.0": {
+        "dependencies": {
+          "Nancy": "2.0.0"
+        },
         "runtime": {
           "lib/net452/Nancy.Hosting.Self.dll": {
             "assemblyVersion": "2.0.0.0",

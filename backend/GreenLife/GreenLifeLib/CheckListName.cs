@@ -1,5 +1,8 @@
 ﻿namespace GreenLifeLib
 {
+    /// <summary>
+    /// Название чек-листа.
+    /// </summary>
     public class CheckListName
     {
         #region [Props]

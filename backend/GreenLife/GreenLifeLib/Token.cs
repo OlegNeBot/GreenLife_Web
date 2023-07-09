@@ -1,18 +1,21 @@
 ﻿namespace GreenLifeLib
 {
+    /// <summary>
+    /// JWT-токен для хранения в БД.
+    /// </summary>
     public class Token
     {
         #region [Constructor]
 
+        /// <summary>
+        /// Токен по id аккаунта и refresh-токену.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="token"></param>
         public Token(int accountId, string token)
         { 
             AccountId = accountId;
             UserToken = token;
-        }
-
-        public Token()
-        { 
-            
         }
 
         #endregion
@@ -21,7 +24,7 @@
 
         public int Id { get; set; }
 
-        public string UserToken { get; set; } = null!;
+        public string? UserToken { get; set; }
 
         #endregion
 

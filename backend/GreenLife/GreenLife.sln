@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GLFinder", "GLFinder\GLFind
 		{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0} = {E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenLifeLib", "GreenLifeLib\GreenLifeLib.csproj", "{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenLifeLib", "GreenLifeLib\GreenLifeLib.csproj", "{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspServer", "AspServer\AspServer.csproj", "{B3CDE35F-03FA-4E15-8F21-0A561618AF7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E31DDB9D-997F-4C75-8A0F-FA9386E1E8E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3CDE35F-03FA-4E15-8F21-0A561618AF7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3CDE35F-03FA-4E15-8F21-0A561618AF7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3CDE35F-03FA-4E15-8F21-0A561618AF7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3CDE35F-03FA-4E15-8F21-0A561618AF7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

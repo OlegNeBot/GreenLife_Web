@@ -2,6 +2,9 @@
 
 namespace GreenLifeLib
 {
+    /// <summary>
+    /// Чек-лист.
+    /// </summary>
     public class CheckList
     {
         #region [Props]
@@ -16,7 +19,7 @@ namespace GreenLifeLib
         public int TypeId { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
-        public Type Type { get; set; }
+        public Type? Type { get; set; }
 
         public List<Habit> Habit { get; set; } = new();
 
@@ -29,12 +32,12 @@ namespace GreenLifeLib
         [System.Text.Json.Serialization.JsonIgnore]
         public int CheckListNameId { get; set; }
 
-        public CheckListName CheckListName { get; set; } = null!;
+        public CheckListName? CheckListName { get; set; }
 
         #endregion
 
         #region [Methods]
-
+        // TODO: Изменить метод.
         /// <summary>
         /// Creates checklists when an account registers.
         /// </summary>

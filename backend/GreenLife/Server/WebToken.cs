@@ -10,6 +10,8 @@ namespace Server
     /// </summary>
     internal class WebToken
     {
+        // TODO: Перенести класс в другое место.
+
         #region [Fields]
 
         //Secret for token

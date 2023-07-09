@@ -2,6 +2,9 @@
 
 namespace GreenLifeLib
 {
+    /// <summary>
+    /// Выполнение привыки пользователем.
+    /// </summary>
     public class HabitPerformance
     {
         #region [Props]
@@ -31,14 +34,17 @@ namespace GreenLifeLib
 
         #region [Constructors]
 
+        /// <summary>
+        /// Выполнение привычки с <paramref name="habitId"/> для аккаунта с <paramref name="accountId"/>.
+        /// </summary>
+        /// <param name="habitId">Id привычки.</param>
+        /// <param name="accountId">Id аккаунта.</param>
         public HabitPerformance(int habitId, int accountId)
         {
             HabitId = habitId;
             AccountId = accountId;
             DateOfExec = DateTime.UtcNow;
         }
-
-        public HabitPerformance() { }
 
         #endregion
 

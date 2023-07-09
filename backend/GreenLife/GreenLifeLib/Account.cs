@@ -3,15 +3,18 @@ using System.Text;
 
 namespace GreenLifeLib
 {
+    /// <summary>
+    /// Аккаунт.
+    /// </summary>
     public class Account
     {
         #region [Props]
 
         public int Id { get; set; }
-        public string Password { get; set; }
-        public string Name { get; set; }
-        public string RegDate { get; set; }
-        public string Email { get; set; }
+        public string? Password { get; set; }
+        public string? Name { get; set; }
+        public string? RegDate { get; set; }
+        public string? Email { get; set; }
         public int ScoreSum { get; set; }
 
         #endregion
@@ -22,7 +25,7 @@ namespace GreenLifeLib
         public int RoleId { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
         public List<CheckList> CheckList { get; set; } = new();
@@ -34,11 +37,12 @@ namespace GreenLifeLib
         public List<AccountAction> AccountAction { get; set; } = new();
 
         [System.Text.Json.Serialization.JsonIgnore]
-        public Token Token { get; set; }
+        public Token? Token { get; set; }
 
         #endregion
 
         #region [Constructors]
+        // TODO: Разобраться в конструкторах.
 
         public Account()
         {
@@ -57,6 +61,8 @@ namespace GreenLifeLib
         #endregion
 
         #region [Methods]
+
+        // TODO: Исправить методы.
 
         /// <summary>
         /// Creates an account when user registers.

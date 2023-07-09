@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fwnzlf60HobGhtcUPA8y6djB3nquckfgAzBmn7WFJUkJdHMXRZpPKEMTrb2D3vPiYObW5wELT0kB5yohWgEgxg==",
+  "dgSpecHash": "SlV2Zph9pnFfJJ95fqy44oUijZb1p0s2+7ou6luVwdXplwG7lPZl+gUVjromrYVnYOrfqjLxhEVPz40WbrVB6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\taria\\Desktop\\GreenLife-Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
+  "projectFilePath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\taria\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\taria\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.6\\microsoft.entityframeworkcore.6.0.6.nupkg.sha512",

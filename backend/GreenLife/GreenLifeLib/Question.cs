@@ -1,5 +1,8 @@
 ﻿namespace GreenLifeLib
 {
+    /// <summary>
+    /// Вопрос анкеты.
+    /// </summary>
     public class Question
     {
         #region [Props]

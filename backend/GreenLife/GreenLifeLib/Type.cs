@@ -1,11 +1,14 @@
 ﻿namespace GreenLifeLib
 {
+    /// <summary>
+    /// Тип чеклистов и привычек.
+    /// </summary>
     public class Type
     {
         #region [Props]
 
         public int Id { get; set; }
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         #endregion
 

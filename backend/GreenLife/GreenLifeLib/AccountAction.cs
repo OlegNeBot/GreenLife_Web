@@ -2,12 +2,15 @@
 
 namespace GreenLifeLib
 {
+    /// <summary>
+    /// Действие аккаунта.
+    /// </summary>
     public class AccountAction
     {
         #region [Props]
 
         public int Id { get; set; }
-        public string ActionDate { get; set; }
+        public string? ActionDate { get; set; }
 
         #endregion
 
@@ -16,16 +19,18 @@ namespace GreenLifeLib
         [System.Text.Json.Serialization.JsonIgnore]
         public int AccountId { get; set; }
 
-        public Account Account { get; set; } = new();
+        public Account? Account { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
         public int ActionId { get; set; }
 
-        public Action Action { get; set; } = new();
+        public Action? Action { get; set; }
 
         #endregion
 
         #region [Methods]
+
+        // TODO: Исправить метод.
 
         /// <summary>
         /// Adds an action to account. Action gains by its id.
