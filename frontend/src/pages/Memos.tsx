@@ -10,7 +10,7 @@ import Memo from './templates/Memo';
 const Memos : React.FC = observer(() => {
   useEffect(() => {
     memo.load();
-  })
+  }, [])
   
     return(
         <>

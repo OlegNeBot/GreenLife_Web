@@ -7399,11 +7399,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\Server.csproj",
+      "projectUniqueName": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\Server.csproj",
+      "projectPath": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\Server.csproj",
       "packagesPath": "C:\\Users\\taria\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\obj\\",
+      "outputPath": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\taria\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7420,8 +7420,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj": {
-              "projectPath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj"
+            "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj": {
+              "projectPath": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj"
             }
           }
         }

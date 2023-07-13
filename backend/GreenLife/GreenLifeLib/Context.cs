@@ -5,6 +5,22 @@ namespace GreenLifeLib
 {
     public class Context : DbContext
     {
+        //private static Context _context;
+
+        /// <summary>
+        /// Возвращает активный экземпляр контекста БД.
+        /// </summary>
+        /// <returns>Экземпляр контекста БД.</returns>
+        /*public static Context GetContext()
+        {
+            if (_context == null)
+            {
+                _context = new Context();
+            }
+
+            return _context;
+        }*/
+
         #region [Constructors]
 
         public Context() { }

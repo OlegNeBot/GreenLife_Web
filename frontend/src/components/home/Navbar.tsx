@@ -21,7 +21,7 @@ export default observer(() => {
   useEffect(() => {
     account.load();
     account.notifyUser(account.Account.Name);
-  })
+  }, [])
   
   
   return(

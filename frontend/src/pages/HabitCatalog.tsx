@@ -8,7 +8,7 @@ import habit from '../store/HabitStore';
 import { HabitModel } from '../models/HabitModel';
 import { observer } from 'mobx-react-lite';
 
-const HabitCatalog : React.FC =  () => {
+const HabitCatalog : React.FC = observer(() => {
   useEffect(() => {
     habit.load();
   }, [habit, habit.load])
@@ -26,6 +26,6 @@ const HabitCatalog : React.FC =  () => {
           </Container>
         </>
     );
-}
+});
 
 export default HabitCatalog;

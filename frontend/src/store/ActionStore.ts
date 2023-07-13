@@ -1,5 +1,5 @@
 import axios from "axios";
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { ActionModel } from "../models/ActionModel";
 
 class ActionStore implements ActionModel {
@@ -28,11 +28,12 @@ class ActionStore implements ActionModel {
     makeAutoObservable(this, {}, {deep: true});
   }
 
-  load = autorun(async () => {
+  load = async () => {
     if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
       return;
     } else {
-    const url = 'http://localhost:8080/achievements';
+    const url = 'https://localhost:7002/achievements';
 
     let token = localStorage.getItem('token');
     if(!token)
@@ -46,7 +47,9 @@ class ActionStore implements ActionModel {
       }
     })
     .then((response) => {
-      this.actions = JSON.parse(response.headers['actions']);
+      runInAction(() => {
+        this.actions = response.data;
+      });
 
       if (localStorage.getItem('token')) {
           localStorage.setItem('token', response.headers['token']);
@@ -59,7 +62,7 @@ class ActionStore implements ActionModel {
       alert(error);
     });
   }
-  });
+  };
 }
 
 export default new ActionStore();

@@ -5,7 +5,7 @@
     /// </summary>
     public class Token
     {
-        #region [Constructor]
+        #region [Constructors]
 
         /// <summary>
         /// Токен по id аккаунта и refresh-токену.
@@ -17,6 +17,11 @@
             AccountId = accountId;
             UserToken = token;
         }
+
+        /// <summary>
+        /// Пустой конструктор для EF.
+        /// </summary>
+        public Token() { }
 
         #endregion
 

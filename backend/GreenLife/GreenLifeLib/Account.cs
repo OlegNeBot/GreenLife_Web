@@ -75,15 +75,14 @@ namespace GreenLifeLib
         {
             //Creating a new account
             Account account = new(email, password, name, regDate);
-            AddAccount(account);
-            using (Context db = new())
-            {
-                //Then setting an action -> achievement for creating an account
-                GreenLifeLib.AccountAction.NewAction(account.Id, 4);
 
-                //Then creating checklists, habit performances etc.
-                GreenLifeLib.CheckList.CreateAccountCheckLists(account);
-            }
+            AddAccount(account);
+
+            //Then setting an action -> achievement for creating an account
+            GreenLifeLib.AccountAction.NewAction(account.Id, 4);
+
+            //Then creating checklists, habit performances etc.
+            GreenLifeLib.CheckList.CreateAccountCheckLists(account);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace GreenLifeLib
         /// <param name="acc">Account that should be added.</param>
         public static void AddAccount(Account acc)
         {
-            using (Context db = new())
+            using (var db = new Context())
             {
                 db.Account.Add(acc);
                 db.SaveChanges();
@@ -106,14 +105,13 @@ namespace GreenLifeLib
         /// <returns>Returns "true" if email is available and "false" if not.</returns>
         public static bool IsEmailAvailable(string email)
         {
-            using (Context db = new())
+            using (var db = new Context())
             {
-                var account = db.Account.Where(p => p.Email.Equals(email)).FirstOrDefault();
-                if (account != null)
-                {
-                    return false;
-                }
-                return true;
+                var account = db.Account
+                                    .Where(p => p.Email.Equals(email))
+                                    .FirstOrDefault();
+
+                return account == null;
             }
         }
 
@@ -124,13 +122,13 @@ namespace GreenLifeLib
         /// <returns>Hashed password.</returns>
         public static string ToHash(string pass)
         {
-            using (SHA256 sha = SHA256.Create())
+            using (var sha = SHA256.Create())
             {
-                byte[] _computed = sha.ComputeHash(Encoding.UTF8.GetBytes(pass));
-                var _builder = new StringBuilder();
-                for (int i = 0; i < _computed.Length; i++)
-                    _builder.Append(_computed[i].ToString("x2"));
-                return _builder.ToString();
+                byte[] computed = sha.ComputeHash(Encoding.UTF8.GetBytes(pass));
+                var builder = new StringBuilder();
+                for (var i = 0; i < computed.Length; i++)
+                    builder.Append(computed[i].ToString("x2"));
+                return builder.ToString();
             }
         }
 

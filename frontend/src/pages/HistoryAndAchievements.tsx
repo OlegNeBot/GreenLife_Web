@@ -6,10 +6,10 @@ import { ActionModel } from '../models/ActionModel';
 import action from '../store/ActionStore';
 import Action from './templates/Action';
 
-const HistoryAndAchievements : React.FC = () => {
+const HistoryAndAchievements : React.FC = observer(() => {
   useEffect(() => {
     action.load();
-  });
+  }, []);
 
   return(
     <>
@@ -22,6 +22,6 @@ const HistoryAndAchievements : React.FC = () => {
       </ListGroup>
     </>
   );
-}
+});
 
 export default HistoryAndAchievements;

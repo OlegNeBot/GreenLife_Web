@@ -1,5 +1,5 @@
 import axios from "axios";
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
 
@@ -20,11 +20,12 @@ class AccountStore {
     makeAutoObservable(this, {}, {deep: true});
   }
 
-  load = autorun(async() => {
+  load = async() => {
     if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
       return;
     } else {
-    const url = 'http://localhost:8080/main';
+    const url = 'https://localhost:7002/main';
     let token = localStorage.getItem('token');
     if(!token)
     {
@@ -37,7 +38,9 @@ class AccountStore {
       }
     })
     .then((response) => {
-      this.Account = JSON.parse(response.headers['account']);
+      runInAction(() => {
+        this.Account = response.data;
+      });
 
       if (localStorage.getItem('token')) {
           localStorage.setItem('token', response.headers['token']);
@@ -50,7 +53,7 @@ class AccountStore {
       console.log(error);
     });
   }
-  });
+  };
 
   notifyUser = (name: string) => {
     if (!("Notification" in window)) {
@@ -88,34 +91,40 @@ class AccountStore {
   habits: number = 0;
   checklists: number = 0;
 
-  loadReport = autorun(async () => {
-    const url = 'http://localhost:8080/report';
-    let token = localStorage.getItem('token');
-    if(!token)
-    {
-      token = sessionStorage.getItem('token');
-    }
-    await axios.get(url, {
-      headers: {
-        'token': token!.toString(),
+  loadReport = async () => {
+    if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
+      return;
+    } else {
+      const url = 'https://localhost:7002/report';
+      let token = localStorage.getItem('token');
+      if(!token)
+      {
+        token = sessionStorage.getItem('token');
       }
-    })
-    .then((response) => {
-       this.UserInfo = JSON.parse(response.headers['account']);
-       this.habits = JSON.parse(response.headers['habits']);
-       this.checklists = JSON.parse(response.headers['checklists']);
+      await axios.get(url, {
+        headers: {
+          'token': token!.toString(),
+        }
+      })
+      .then((response) => {
+        // TODO: Исправить получение из header'ов
+        this.UserInfo = JSON.parse(response.headers['account']);
+        this.habits = JSON.parse(response.headers['habits']);
+        this.checklists = JSON.parse(response.headers['checklists']);
 
-      if (localStorage.getItem('token')) {
-          localStorage.setItem('token', response.headers['token']);
-      } 
-      else if (sessionStorage.getItem('token')) {
-        sessionStorage.setItem('token', response.headers['token']);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  });
+        if (localStorage.getItem('token')) {
+            localStorage.setItem('token', response.headers['token']);
+        } 
+        else if (sessionStorage.getItem('token')) {
+          sessionStorage.setItem('token', response.headers['token']);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  };
 
   giveReport = () => {
     let DATA: any = document.getElementById('report');
@@ -131,30 +140,37 @@ class AccountStore {
   }
 
   accountLoad = async() => {
-    const url = 'http://localhost:8080/account';
-    let token = localStorage.getItem('token');
-    if(!token)
-    {
-      token = sessionStorage.getItem('token');
-    }
-    await axios.get(url, {
-      headers: {
-        'token': token!.toString(),
+    if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
+      return;
+    } else {
+      const url = 'https://localhost:7002/account';
+      let token = localStorage.getItem('token');
+      if(!token)
+      {
+        token = sessionStorage.getItem('token');
       }
-    })
-    .then((response) => {
-      this.Account = JSON.parse(response.headers['account']);
+      await axios.get(url, {
+        headers: {
+          'token': token!.toString(),
+        }
+      })
+      .then((response) => {
+        runInAction(() => {
+          this.Account = response.data;
+        });
 
-      if (localStorage.getItem('token')) {
-          localStorage.setItem('token', response.headers['token']);
-      } 
-      else if (sessionStorage.getItem('token')) {
-        sessionStorage.setItem('token', response.headers['token']);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        if (localStorage.getItem('token')) {
+            localStorage.setItem('token', response.headers['token']);
+        } 
+        else if (sessionStorage.getItem('token')) {
+          sessionStorage.setItem('token', response.headers['token']);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 

@@ -10,7 +10,7 @@ export interface Certificate {
 
 const Certificate : React.FC<Certificate> = () => {
   useEffect(() => {
-  })
+  }, [])
   return(
     <>
     <Card id='certificate'>

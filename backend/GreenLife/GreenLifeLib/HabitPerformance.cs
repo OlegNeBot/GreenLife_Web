@@ -46,6 +46,11 @@ namespace GreenLifeLib
             DateOfExec = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Пустой конструктор для EF.
+        /// </summary>
+        public HabitPerformance() { }
+
         #endregion
 
         #region [Methods]
@@ -58,7 +63,7 @@ namespace GreenLifeLib
         /// <param name="accountId">Account id</param>
         public async void NewExecution()
         {
-            using (Context db = new())
+            using (var db = new Context())
             {
                 // If habit isn't executed - add an execution
                 if (!Executed)
@@ -66,7 +71,10 @@ namespace GreenLifeLib
                     NumOfExecs++;
                     DateOfExec = DateTime.UtcNow;
 
-                    Account account = await db.Account.Where(p => p.Id == AccountId).FirstAsync();
+                    var account = await db.Account
+                                                .Where(p => p.Id == AccountId)
+                                                .FirstAsync();
+
                     AccountAction.NewAction(account.Id, 1);
 
                     // If habit executed needed number of times - change its status
@@ -81,20 +89,22 @@ namespace GreenLifeLib
                                 AccountAction.NewAction(account.Id, 5);
                             }
                             account.ScoreSum += Habit.Score;
+
                             db.Account.Update(account);
                         }
                         catch (InvalidOperationException)
                         { }
                     }
+
                     db.HabitPerformance.Update(this);
-                    await db.SaveChangesAsync();
 
                     //Checking if checklist is completed
-                    List<CheckList> checklists = await db.CheckList.Where(p => p.AccountId == AccountId)
+                    var checklists = await db.CheckList.Where(p => p.AccountId == AccountId)
                                                              .Include(d => d.Habit)
                                                              .ToListAsync();
-                    bool anyCompleted = false;
-                    foreach (CheckList cl in checklists)
+                    var anyCompleted = false;
+
+                    foreach (var cl in checklists)
                     {
                         if (cl.ExecutionStatus)
                         {
@@ -103,30 +113,38 @@ namespace GreenLifeLib
                         }
                     }
 
-                    CheckList checklist = checklists.Where(p => p.TypeId == Habit.TypeId).First();
+                    var checklist = checklists
+                                            .Where(p => p.TypeId == Habit.TypeId)
+                                            .First();
+
                     bool allFormed = true;
 
-                    foreach (Habit h in checklist.Habit)
+                    foreach (var h in checklist.Habit)
                     {
-                        HabitPerformance habitPerformance = await db.HabitPerformance.Where(p => p.HabitId == h.Id)
-                                                                                     .Where(p => p.AccountId == AccountId)
-                                                                                     .FirstAsync();
+                        var habitPerformance = await db.HabitPerformance
+                                                                    .Where(p => p.HabitId == h.Id)
+                                                                    .Where(p => p.AccountId == AccountId)
+                                                                    .FirstAsync();
+
                         if (!habitPerformance.Executed)
                         {
                             allFormed = false;
                             break;
                         }
                     }
+
                     if (allFormed)
                     {
                         if (!anyCompleted)
                         {
                             AccountAction.NewAction(account.Id, 6);
                         }
+
                         checklist.ExecutionStatus = true;
                         db.CheckList.Update(checklist);
-                        await db.SaveChangesAsync();
                     }
+
+                    await db.SaveChangesAsync();
                 }
             }
         }

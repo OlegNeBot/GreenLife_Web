@@ -13,6 +13,7 @@ const CheckList : React.FC<CheckListModel> = observer(props => {
   const redirectToChecklist = (id: number) => {
     navigate(`/home/checklists/${id}`, {replace: true});
   }
+        // TODO: Показывать кол-во неотмеченных привычек.
   
   return (
     <>

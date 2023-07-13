@@ -44,36 +44,51 @@ namespace GreenLifeLib
         /// <param name="account">Account</param>
         public static async void CreateAccountCheckLists(Account account)
         {
-            using (Context db = new())
+            using (var db = new Context())
             {
-                List<CheckList> checklists = new List<CheckList>();
+                var checklists = new List<CheckList>();
 
                 //Getting types of checklists and habits
                 var types = await db.Type.ToListAsync();
 
                 //For each type creates a checklist with it content
-                foreach (Type type in types)
+                foreach (var type in types)
                 {
-                    int typeId = type.Id;
+                    var typeId = type.Id;
 
-                    List<Habit> habits = await db.Habit.Where(p => p.TypeId == typeId).ToListAsync();
+                    var habits = await db.Habit
+                                            .Where(p => p.TypeId == typeId)
+                                            .ToListAsync();
+
                     //For each habit creates its account performance
-                    foreach (Habit habit in habits)
+                    foreach (var habit in habits)
                     {
-                        HabitPerformance habitPerformance = new(habit.Id, account.Id);
+                        var habitPerformance = new HabitPerformance(habit.Id, account.Id);
+
                         account.HabitPerformance.Add(habitPerformance);
-                        db.Account.Update(account);
-                        await db.SaveChangesAsync();
+
+                        //db.Account.Update(account);
                     }
 
                     //Adding an info to checklist
-                    CheckListName name = await db.CheckListName.Where(p => p.Id == typeId).FirstAsync();
-                    CheckList checklist = new CheckList() { TypeId = typeId, Habit = habits, AccountId = account.Id, CheckListNameId = name.Id};
+                    var name = await db.CheckListName
+                                                .Where(p => p.Id == typeId)
+                                                .FirstAsync();
+                    var checklist = new CheckList()
+                    {
+                        TypeId = typeId,
+                        Habit = habits,
+                        AccountId = account.Id,
+                        CheckListNameId = name.Id
+                    };
+
                     checklists.Add(checklist);
                 }
+
                 //Then CheckLists are adding into database
                 account.CheckList.AddRange(checklists);
                 db.Account.Update(account);
+
                 await db.SaveChangesAsync();
             }
         }

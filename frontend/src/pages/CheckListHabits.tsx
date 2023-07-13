@@ -15,7 +15,7 @@ const CheckListHabits : React.FC = observer(() => {
 
   useEffect(() => {
     habit.loadByCheckList(id);
-  })
+  }, [habit, habit.loadByCheckList])
 
     return(
         <>

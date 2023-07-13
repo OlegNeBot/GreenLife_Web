@@ -13,7 +13,7 @@ export interface ReportModel {
 const Report : React.FC<ReportModel> = () => {
   useEffect(() => {
     account.loadReport();
-  })
+  }, [])
   
   return(
     <>

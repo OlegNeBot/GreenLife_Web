@@ -51,7 +51,7 @@ const SignUp: React.FC = () => {
         email: values.email,
         password: sha256(values.password),
       }
-      const url = 'http://localhost:8080/signup';
+      const url = 'https://localhost:7002/signup';
       await axios.post(url, data)
       .then((response) => {
         if (response.status === 200) { 

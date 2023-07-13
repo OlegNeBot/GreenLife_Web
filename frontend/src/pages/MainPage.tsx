@@ -1,21 +1,12 @@
 import React, { useEffect } from 'react';
 import { Alert, Container, Row } from 'react-bootstrap';
-
-import CheckList from './templates/CheckList';
-import Habit from './templates/Habit';
-
 import { observer } from 'mobx-react-lite';
-import habit from '../store/HabitStore';
-import checklist from '../store/CheckListStore';
 import account from '../store/AccountStore';
-
-import { CheckListModel } from '../models/CheckListModel';
-import { HabitModel } from '../models/HabitModel';
 
 const MainPage : React.FC = observer(() => {
   useEffect(() => {
     account.load();
-  });
+  }, []);
   
     return(
       <Container fluid>

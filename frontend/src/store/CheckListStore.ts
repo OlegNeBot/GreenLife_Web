@@ -1,5 +1,5 @@
 import axios from "axios";
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { CheckListModel } from "../models/CheckListModel";
 
 class CheckListStore implements CheckListModel {
@@ -17,11 +17,12 @@ class CheckListStore implements CheckListModel {
     makeAutoObservable(this);
   }
 
-  load = autorun(async () => {
+  load = async () => {
     if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
       return;
     } else {
-    const url = 'http://localhost:8080/checklists';
+    const url = 'https://localhost:7002/checklists';
 
     let token = localStorage.getItem('token');
     if(!token)
@@ -34,7 +35,9 @@ class CheckListStore implements CheckListModel {
       }
     })
     .then((response) => {
-      this.checklists = JSON.parse(response.headers['checklists']);
+      runInAction(() => {
+        this.checklists = response.data;
+      });
 
       if (localStorage.getItem('token')) {
           localStorage.setItem('token', response.headers['token']);
@@ -47,7 +50,7 @@ class CheckListStore implements CheckListModel {
       console.log(error);
     });
   }
-  });
+  };
   
 }
 

@@ -1190,11 +1190,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
+      "projectUniqueName": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
       "projectName": "GreenLifeLib",
-      "projectPath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
+      "projectPath": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\GreenLifeLib.csproj",
       "packagesPath": "C:\\Users\\taria\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\taria\\Desktop\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\obj\\",
+      "outputPath": "D:\\ВКР\\GreenLife_Web\\backend\\GreenLife\\GreenLifeLib\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\taria\\AppData\\Roaming\\NuGet\\NuGet.Config",

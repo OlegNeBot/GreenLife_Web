@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { autorun, makeAutoObservable } from 'mobx';
+import { autorun, makeAutoObservable, runInAction } from 'mobx';
 
 import { HabitModel } from '../models/HabitModel';
 
@@ -36,11 +36,16 @@ class HabitStore implements HabitModel {
 
   chLHabits: HabitModel[] = [];
 
-  load = autorun(async () => {
+  constructor() {
+    makeAutoObservable(this, {}, {deep:true});
+  }
+
+  load = async () => {
     if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
       return;
     } else {
-    const url = 'http://localhost:8080/habits';
+    const url = 'https://localhost:7002/habits';
     let token = localStorage.getItem('token');
     if(!token)
     {
@@ -52,8 +57,11 @@ class HabitStore implements HabitModel {
       }
     })
     .then((response) => {
-      this.habits = JSON.parse(response.headers['habits']);
-      this.sortedHabits = this.habits;
+      runInAction(() => {
+        this.habits = response.data;
+        this.sortedHabits = this.habits;
+      });
+
       if (localStorage.getItem('token')) {
           localStorage.setItem('token', response.headers['token']);
       } 
@@ -65,7 +73,7 @@ class HabitStore implements HabitModel {
       console.log(error);
     });
   }
-  });
+  };
 
   sorting = (mode: string) => {
     if (mode === '1') {
@@ -82,12 +90,12 @@ class HabitStore implements HabitModel {
     }
   }
 
-  constructor() {
-    makeAutoObservable(this, {}, {deep:true});
-  }
-
   mark = async (id: number, habits: HabitModel[]) => {
-      const url = `http://localhost:8080/perform/` + id;
+    if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
+      return;
+    } else {
+      const url = `https://localhost:7002/perform/` + id;
 
       let token = localStorage.getItem('token');
       if(!token) {
@@ -100,8 +108,11 @@ class HabitStore implements HabitModel {
         }
       })
       .then((response) => {
-        this.HabitPhrase = JSON.parse(response.headers['phrase']);
-        this.HabitPerformance[0].NumOfExecs = habits[id-1].HabitPerformance[0].NumOfExecs++;
+        runInAction(() => {
+          this.HabitPhrase = response.data;
+          this.HabitPerformance[0].NumOfExecs = habits[id-1].HabitPerformance[0].NumOfExecs++;
+        });
+
         action.load();
 
         if (localStorage.getItem('token')) {
@@ -114,6 +125,7 @@ class HabitStore implements HabitModel {
       .catch((error) => {
         console.log(error);
       });
+    }
   }
 
   checkExecuted = (id: number) => {
@@ -142,58 +154,71 @@ class HabitStore implements HabitModel {
   hName?: string = '';
 
   loadCertificate = async (id: number) => {
-    const url = 'http://localhost:8080/certificate/' + id;
-    let token = localStorage.getItem('token');
-    if(!token)
-    {
-      token = sessionStorage.getItem('token');
-    }
-    await axios.get(url, {
-      headers: {
-        'token': token!.toString(),
+    if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
+      return;
+    } else {
+      const url = 'https://localhost:7002/certificate/' + id;
+      let token = localStorage.getItem('token');
+      if(!token)
+      {
+        token = sessionStorage.getItem('token');
       }
-    })
-    .then((response) => {
-       this.Name = JSON.parse(response.headers['account']);
-       this.hName = JSON.parse(response.headers['habit']);
+      await axios.get(url, {
+        headers: {
+          'token': token!.toString(),
+        }
+      })
+      .then((response) => {
+        // TODO: Разобраться с заголовками.
+        this.Name = JSON.parse(response.headers['account']);
+        this.hName = JSON.parse(response.headers['habit']);
 
-      if (localStorage.getItem('token')) {
-          localStorage.setItem('token', response.headers['token']);
-      } 
-      else if (sessionStorage.getItem('token')) {
-        sessionStorage.setItem('token', response.headers['token']);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        if (localStorage.getItem('token')) {
+            localStorage.setItem('token', response.headers['token']);
+        } 
+        else if (sessionStorage.getItem('token')) {
+          sessionStorage.setItem('token', response.headers['token']);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 
   loadByCheckList = async (id: number) => {
-    const url = 'http://localhost:8080/checklist/' + id;
-    let token = localStorage.getItem('token');
-    if(!token)
-    {
-      token = sessionStorage.getItem('token');
-    }
-    await axios.get(url, {
-      headers: {
-        'token': token!.toString(),
+    if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
+      return;
+    } else {
+      const url = 'https://localhost:7002/checklist/' + id;
+      let token = localStorage.getItem('token');
+      if(!token)
+      {
+        token = sessionStorage.getItem('token');
       }
-    })
-    .then((response) => {
-      this.chLHabits = JSON.parse(response.headers['habits']);
+      await axios.get(url, {
+        headers: {
+          'token': token!.toString(),
+        }
+      })
+      .then((response) => {
+        runInAction(() => {
+          this.chLHabits = response.data;
+        });
 
-      if (localStorage.getItem('token')) {
-          localStorage.setItem('token', response.headers['token']);
-      } 
-      else if (sessionStorage.getItem('token')) {
-        sessionStorage.setItem('token', response.headers['token']);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        if (localStorage.getItem('token')) {
+            localStorage.setItem('token', response.headers['token']);
+        } 
+        else if (sessionStorage.getItem('token')) {
+          sessionStorage.setItem('token', response.headers['token']);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 

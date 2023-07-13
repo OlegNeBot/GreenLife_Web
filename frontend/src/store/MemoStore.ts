@@ -1,5 +1,5 @@
 import axios from "axios";
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { MemoModel } from "../models/MemoModel";
 
 class MemoStore implements MemoModel {
@@ -13,11 +13,12 @@ class MemoStore implements MemoModel {
     makeAutoObservable(this);
   }
 
-  load = autorun(async() => {
+  load = async() => {
     if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+      console.log("Failed");
       return;
     } else {
-    const url = 'http://localhost:8080/memos';
+    const url = 'https://localhost:7002/memos';
 
     let token = localStorage.getItem('token');
     if(!token)
@@ -30,7 +31,9 @@ class MemoStore implements MemoModel {
       }
     })
     .then((response) => {
-      this.memos = JSON.parse(response.headers['memos']);
+      runInAction(() => {
+        this.memos = response.data;
+      });
 
       if (localStorage.getItem('token')) {
           localStorage.setItem('token', response.headers['token']);
@@ -43,7 +46,7 @@ class MemoStore implements MemoModel {
       console.log(error);
     });
   }
-  });
+  };
 
 }
 

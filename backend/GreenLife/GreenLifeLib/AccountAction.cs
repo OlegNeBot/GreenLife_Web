@@ -39,11 +39,23 @@ namespace GreenLifeLib
         /// <param name="actionId">Action id.</param>
         public static async void NewAction(int accountId, int actionId)
         {
-            using (Context db = new())
+            using (var db = new Context())
             {
-                Account account = await db.Account.Where(p => p.Id == accountId).FirstAsync();
-                Action action = await db.Action.Where(p => p.Id == actionId).FirstAsync();
-                AccountAction accountAction =  new() { ActionId = action.Id, Action = action, Account = account, AccountId = account.Id, ActionDate = DateTime.UtcNow.ToShortDateString() };
+                var account = await db.Account
+                                        .Where(p => p.Id == accountId)
+                                        .FirstAsync();
+                var action = await db.Action
+                                        .Where(p => p.Id == actionId)
+                                        .FirstAsync();
+                AccountAction accountAction = new()
+                {
+                    ActionId = action.Id,
+                    Action = action,
+                    Account = account,
+                    AccountId = account.Id,
+                    ActionDate = DateTime.UtcNow.ToShortDateString()
+
+                };
                 await db.AccountAction.AddAsync(accountAction);
                 await db.SaveChangesAsync();
             }

@@ -8,8 +8,8 @@ import CheckList from './templates/CheckList';
 import { observer } from 'mobx-react-lite';
 
 
-const CheckLists : React.FC = () => {
-  useEffect(() => { checklist.load()})
+const CheckLists : React.FC = observer(() => {
+  useEffect(() => { checklist.load()}, [])
 
     return(
         <>
@@ -24,6 +24,6 @@ const CheckLists : React.FC = () => {
           </Container>
         </>
     );
-}
+});
 
 export default CheckLists;
